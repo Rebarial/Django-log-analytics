@@ -15,10 +15,8 @@ def main() -> None:
         print(f"Ошибка: отчет '{args.report}' не поддерживается")
         return
 
-    for log in args.log_files:
-        report = report_dict[args.report](log)
-        report.print_report()
-        print()
+    report = report_dict[args.report](args.log_files)
+    report.print_report()
 
 if __name__ == "__main__":
     main()

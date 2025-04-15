@@ -6,23 +6,17 @@ from typing import Optional
 
 class ReportBase(ABC):
 
-    def __init__(self, file_path: str) -> None:
-        self.file_path: str = file_path
-
-        self.file_reader: FileReader = None
-        self.set_file_reader()
+    def __init__(self, file_paths: Optional[list[str]] = None) -> None:
+        
+        self.file_paths: list[str] = file_paths
+        
+        if not self.file_paths:
+            self.file_paths: list[str] = []
 
         self.report: dict = dict()
 
-    def change_file_path(self, file_path: str) -> None:
-        self.file_path = file_path
-        self.set_file_reader()
-
-    def get_error(self) -> Optional[dict]:
-        if self.file_path == "":
-            return {settings.report_service_column_name: f"Ошибка: не указан путь к файлу"}
-        if self.file_reader == None:
-            return {settings.report_service_column_name: f"Ошибка: Расширение файла '{self.file_path}' не поддерживается!"}
+    def change_file_paths(self, file_paths: Optional[list[str]]) -> None:
+        self.file_paths = file_paths
 
     @abstractmethod
     def build_report(self) -> dict:
@@ -57,6 +51,10 @@ class ReportBase(ABC):
             service_line = report[settings.report_service_column_name]
             del report[settings.report_service_column_name]
 
+        if settings.report_error_column_name in report:
+            error_line = report[settings.report_error_column_name]
+            del report[settings.report_error_column_name]
+
         if report:
 
             line = f"{'HANDLER':^{settings.report_handler_column_size}}"
@@ -77,18 +75,19 @@ class ReportBase(ABC):
                 print(line)
 
         print(service_line)
+        for error in error_line:
+            print(error)
 
     def get_report(self) -> dict:
         return self.report
 
-    def get_file_type(self) -> None:
-        return Path(self.file_path).suffix
+    def get_file_type(self, file_path) -> None:
+        return Path(file_path).suffix
     
-    def set_file_reader(self) -> None:
-        file_type = self.get_file_type()
+    def get_file_reader(self, file_path) -> FileReader:
+            file_type = self.get_file_type(file_path)
 
-        for key, value in settings.extenstions_dict.items():
-            if  file_type in value:
-                self.file_reader = reader_dict[key]
-                return
-        self.file_reader = None
+            for key, value in settings.extenstions_dict.items():
+                if  file_type in value:
+                    return reader_dict[key]
+            return None
