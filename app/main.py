@@ -7,9 +7,13 @@ from filereaders.filereader_text import FileReaderText
 def main() -> None:
     parser = ArgumentParser(description="Анализ логов Django-приложения.")
     parser.add_argument('log_files', nargs='+', help='Пути к логам')
-    parser.add_argument('--report', type=str, help='Тип отчета (например, handlers)')
+    parser.add_argument('--report', type=str, help='Тип отчета (например, handlers)', required=True)
 
     args = parser.parse_args()
+
+    if not args.report in report_dict:
+        print(f"Ошибка: Тип отчетов '{args.report}' не поддерживается")
+        return
 
     for log in args.log_files:
         report = report_dict[args.report](log)
