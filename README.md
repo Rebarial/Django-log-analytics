@@ -36,6 +36,8 @@ python app/main.py --report handlers logs/app1.log logs/app2.log logs/app3.log
 
 
 
-![image](https://github.com/user-attachments/assets/2cb889e9-264c-489a-af94-dd91a21d5958)
+![image](https://github.com/user-attachments/assets/73d6938c-727b-41d6-a0bf-6d072234aa14)
 
-![image](https://github.com/user-attachments/assets/dff24139-838a-47ef-a04b-7241631493b2)
+
+![image](https://github.com/user-attachments/assets/910969a7-3977-4d31-9b21-71ac59f8bfcc)
+
