@@ -12,7 +12,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if not args.report in report_dict:
-        print(f"Ошибка: Тип отчетов '{args.report}' не поддерживается")
+        print(f"Ошибка: отчет '{args.report}' не поддерживается")
         return
 
     for log in args.log_files:
